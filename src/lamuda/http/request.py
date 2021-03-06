@@ -7,13 +7,14 @@ from urllib import parse
 import requests
 
 
-class Request(object):
-    logger = logging.getLogger(f'{__name__}.Request')
+class Http(object):
+    logger = logging.getLogger(f'{__name__}.Http')
 
     @staticmethod
-    def request_url(url, params, user_agent='Mozilla 5.10'):
+    def request(url, params, method="GET", user_agent='Mozilla 5.10'):
         """If return status not 200, return None, else return a dict.
 
+        :param method:
         :param url:
         :param params:
         :param user_agent:
@@ -24,10 +25,28 @@ class Request(object):
             "Content-type": "application/json",
             "User-agent": user_agent,
         }
-        post_data = parse.urlencode(params)
-        raw_data = requests.get(url, post_data, headers=headers)
-        if raw_data.status_code == 200:
-            result_data = raw_data.json()
-            Request.logger.info(result_data)
+
+        if method == 'GET':
+            if params:
+                payload = parse.urlencode(params)
+            else:
+                payload = {}
+            response = requests.get(url, payload, headers=headers)
+        elif method == 'POST':
+            # todo: 实现post方法
+            pass
+
+        if response.status_code == 200:
+            result_data = response.json()
+            Http.logger.info(result_data)
             return result_data
         return None
+
+    @staticmethod
+    def get(url, params: dict = {}):
+        return Http.request(url, params)
+
+    @staticmethod
+    def post(url, params: dict = {}):
+        return Http.request(url, params, method="POST")
+
