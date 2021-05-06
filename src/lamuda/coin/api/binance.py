@@ -5,16 +5,16 @@ import ccxt
 
 from base import BaseExchange
 
-class Huobi(BaseExchange):
+class Binance(BaseExchange):
     """
     """
     def __init__(self):
         super().__init__()
-        self.name = 'Huobi'
+        self.name = 'Binance'
         self.logger = logging.getLogger(f'{__name__}.{self.name}')
         
-        # 初始化交易所API实例
-        self.api = ccxt.huobipro()
+        self.api = ccxt.binance()
+        
         self.api.enableRateLimit = True
         self.api.rateLimit = 200
         dict_market = self.api.load_markets()
