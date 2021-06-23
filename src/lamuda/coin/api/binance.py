@@ -3,7 +3,7 @@ import time
 
 import ccxt
 
-from base import BaseExchange
+from .base import BaseExchange
 
 class Binance(BaseExchange):
     """
@@ -22,12 +22,12 @@ class Binance(BaseExchange):
     def quote_price_exchange(self, dict_market):
         pass
         
-    def get_ohlcv(self, symbol, timeframe='1d'):
+    def get_ohlcv(self, symbol, timeframe='1d', limit=200):
         if symbol in self.api.markets:
             time.sleep(self.api.rateLimit/1000)
-            self.logger.warning(f"get symbol ohlcv: {symbol}")
+            self.logger.info(f"get symbol ohlcv: {symbol}")
             # fetchOHLCV (symbol, timeframe = '1m', since = undefined, limit = undefined, params = {})
             # result array is order by microsec ascending
             # [[ms, open, high, low, close, vol],[]]
-            return self.api.fetch_ohlcv(symbol, timeframe, limit=200)
+            return self.api.fetch_ohlcv(symbol, timeframe, limit=limit)
         return None

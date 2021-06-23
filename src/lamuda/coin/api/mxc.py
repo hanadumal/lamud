@@ -1,19 +1,35 @@
-from lamuda.http import Http
+from lamuda.http.request import Http
 
 
 class Mxc(object):
+    base_path = 'https://www.mxc.com'
+    
     @staticmethod
     def query_symbol():
         """
 
         :return:
         """
-        base_path = 'https://www.mxc.com'
+        base_path = Mxc.base_path
         symbol_path = f'{base_path}/open/api/v2/market/symbols'
-        print(symbol_path)
         rp = Http.get(symbol_path, None)
-        print(rp)
-
+    
+    @staticmethod
+    def get_ohlcv(symbol, timeframe='1d', limit=200):
+        """ 获取ohlcv数据
+        """
+        symbol = '_'.join(symbol.split('/'))
+        base_path = Mxc.base_path
+        candle_path = f'{base_path}/open/api/v2/market/kline'
+        params = {"symbol": symbol,
+                  "interval": timeframe,
+                  "limit": limit}
+        rp = Http.get(candle_path, params)
+        #           time  open  high  low   close  vol
+        result = [ [i[0], float(i[1]), float(i[3]), float(i[4]), float(i[2]), float(i[5])] for i in rp['data']]
+        return result
+        
+        
     @staticmethod
     def query_kline(symbol, ktype="1m", limit=240):
         """
