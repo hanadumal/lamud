@@ -68,3 +68,11 @@ class CommonDate(object):
     @staticmethod
     def now_iso(tz=DEFAULT_ZONE):
         return CommonDate.now().strftime('%Y-%m-%d %H:%M:%S')
+
+    @staticmethod
+    def mts_2_iso(mts, tz=DEFAULT_ZONE):
+        return datetime.fromtimestamp(mts/1000).strftime('%Y-%m-%d %H:%M:%S')
+
+    @staticmethod
+    def ts_2_iso(ts, tz=DEFAULT_ZONE):
+        return datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')

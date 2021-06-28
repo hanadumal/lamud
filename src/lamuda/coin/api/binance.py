@@ -2,8 +2,12 @@ import logging
 import time
 
 import ccxt
+import numpy as np
+import pandas as pd
 
 from .base import BaseExchange
+from ...date.common_date import CommonDate
+
 
 class Binance(BaseExchange):
     """
@@ -31,3 +35,16 @@ class Binance(BaseExchange):
             # [[ms, open, high, low, close, vol],[]]
             return self.api.fetch_ohlcv(symbol, timeframe, limit=limit)
         return None
+
+    def get_ohlcv_df(self, symbol, timeframe='1d', limit=200):
+        klines = self.get_ohlcv(symbol, timeframe, limit)
+        klines_nd = np.array(klines)
+        df = pd.DataFrame({'id':    klines_nd[0],
+                           'open':  klines_nd[1],
+                           'high':  klines_nd[2],
+                           'low':   klines_nd[3],
+                           'close': klines_nd[4],
+                           'vol':   klines_nd[5]
+                           })
+        df['t'] = df['id'].apply(CommonDate.mts_iso())
+        return df

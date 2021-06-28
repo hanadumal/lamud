@@ -6,8 +6,8 @@ from datetime import datetime
 
 import matplotlib.pyplot as plt
 
-from .conf    import ma1_size, ma2_size, dea_size
-from .conf    import point_limit
+from .conf import ma1_size, ma2_size, dea_size
+from .conf import point_limit
 
 
 pd.set_option('precision', 10)
