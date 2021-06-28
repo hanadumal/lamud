@@ -62,6 +62,22 @@ class CommonDate(object):
         return int(datetime.timestamp(datetime.now()))
 
     @staticmethod
+    def last_hour_start_ts(tz=DEFAULT_ZONE):
+        """Last hour start timestamp
+        :return integer
+        """
+        t = datetime.now().replace(minute=0, second=0, microsecond=0) - timedelta(hours=1)
+        return int(datetime.timestamp(t))
+
+    @staticmethod
+    def last_hour_end_ts(tz=DEFAULT_ZONE):
+        """Last hour end timestamp
+        :return integer
+        """
+        t = datetime.now().replace(minute=0, second=0, microsecond=0)
+        return int(datetime.timestamp(t))
+
+    @staticmethod
     def now(tz=DEFAULT_ZONE):
         return datetime.now()
 
